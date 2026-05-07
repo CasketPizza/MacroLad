@@ -166,21 +166,6 @@ This repo includes the demo at:
 docs/index.html
 ```
 
-To publish it:
-
-1. Push this repo to GitHub.
-2. Open the repository settings.
-3. Go to **Pages**.
-4. Set the source to **Deploy from a branch**.
-5. Select the `main` branch and the `/docs` folder.
-6. Save.
-
-After GitHub Pages builds, the demo should be available at:
-
-```text
-https://casketpizza.github.io/MacroLad/
-```
-
 ---
 
 ## Flashing / setup overview
