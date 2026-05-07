@@ -253,8 +253,8 @@ If you change the key count, check the WebUI, profile storage, OLED menu behavio
 
 ## Credits
 
-- Firmware by Casket Pizza
+- Firmware by [Casket Pizza](https://github.com/CasketPizza)
 - 3D-printable enclosure/model: [shortcut_deck by the_pragma_way on Thingiverse](https://www.thingiverse.com/thing:7151316)
-- Animated eyes powered by FluxGarage RoboEyes
+- Animated eyes powered by [FluxGarage RoboEyes](https://github.com/FluxGarage/RoboEyes)
 - Display and LED libraries by Adafruit
 - ESP32 platform support by Espressif
