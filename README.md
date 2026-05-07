@@ -102,11 +102,18 @@ MacroLad should be adaptable to:
 - Other I2C pins, if `OLED_SDA` and `OLED_SCL` are changed
 - Other RGB data pins, if `RGB_PIN` is changed
 
-### Important board setting
+### Important board setting for USB keyboard output
 
-USB keyboard output requires an ESP32-S3 build configuration with USB HID enabled.
+USB keyboard output requires an ESP32-S3 build configuration with USB HID enabled. The WebUI can still run with a USB serial-only build, but the device will **not** act as a keyboard unless TinyUSB HID is enabled.
 
-In Arduino IDE, use a board/USB setting that enables TinyUSB / USB-OTG HID. If the sketch is built with USB serial-only mode, the WebUI can still run, but the device will not act as a USB keyboard.
+In Arduino IDE, check the **Tools** menu for your selected ESP32-S3 board and use settings equivalent to:
+
+```text
+USB Mode: USB-OTG (TinyUSB)
+USB CDC On Boot: Enabled
+```
+
+The exact wording can vary between ESP32 board packages and board definitions, but the important part is that the build must use **TinyUSB / USB-OTG HID**, not USB serial-only / hardware CDC mode.
 
 ---
 
@@ -157,16 +164,6 @@ The online demo is a static browser mockup of the MacroLad WebUI. It does **not*
 Use it to preview the layout and explore the kind of settings available before flashing:
 
 <https://casketpizza.github.io/MacroLad/>
-
-### Hosting the demo with GitHub Pages
-
-This repo includes the demo at:
-
-```text
-docs/index.html
-```
-
----
 
 ## Flashing / setup overview
 
@@ -245,18 +242,7 @@ If you change the key count, check the WebUI, profile storage, OLED menu behavio
 
 ---
 
-## Repository layout suggestion
 
-```text
-MacroLad/
-├─ MacroLad.ino
-├─ LICENSE
-├─ README.md
-└─ docs/
-   └─ index.html
-```
-
----
 
 ## Credits
 
