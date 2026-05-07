@@ -6,7 +6,7 @@ It is designed around a hand-wired 10-key build, but the firmware can be altered
 
 ![MacroLad device photo](docs/macrolad.gif)
 
-The photographed build uses the [shortcut_deck 3D-printable model by the_pragma_way on Thingiverse](https://www.thingiverse.com/thing:7151316). If you build your own MacroLad with different printed parts, check the switch spacing, OLED opening, USB access, LED clearance, and GPIO wiring before flashing.
+Above build uses the [shortcut_deck 3D-printable model by the_pragma_way on Thingiverse](https://www.thingiverse.com/thing:7151316).
 
 > **Demo WebUI:** try the browser-only mockup before flashing:  
 > <https://casketpizza.github.io/MacroLad/>
