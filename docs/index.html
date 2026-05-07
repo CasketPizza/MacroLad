@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MacroLad WebUI Demo</title>
+  <style>
+    :root{
+      --bg:#070b12;
+      --panel:#101722;
+      --panel2:#151f2e;
+      --text:#edf4ff;
+      --muted:#94a3b8;
+      --line:#283548;
+      --accent:#6ee7ff;
+      --accent2:#a78bfa;
+      --danger:#fb7185;
+      --ok:#34d399;
+      --warn:#fbbf24;
+      --shadow:0 18px 50px rgba(0,0,0,.35);
+      color-scheme:dark;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(110,231,255,.16), transparent 28rem),
+        radial-gradient(circle at 80% 0%, rgba(167,139,250,.16), transparent 24rem),
+        linear-gradient(180deg,#070b12,#0a0f18 55%,#05070b);
+      color:var(--text);
+      min-height:100vh;
+    }
+    a{color:var(--accent)}
+    header{
+      padding:32px clamp(16px,4vw,48px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      position:sticky;
+      top:0;
+      background:rgba(7,11,18,.78);
+      backdrop-filter:blur(14px);
+      z-index:20;
+    }
+    .hero{
+      display:flex;
+      justify-content:space-between;
+      gap:24px;
+      align-items:center;
+      max-width:1280px;
+      margin:auto;
+    }
+    h1{margin:0;font-size:clamp(30px,5vw,56px);letter-spacing:-.05em}
+    .sub{margin:.35rem 0 0;color:var(--muted);max-width:680px;line-height:1.5}
+    .badge{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border:1px solid rgba(110,231,255,.36);
+      border-radius:999px;
+      background:rgba(110,231,255,.08);
+      color:#dffaff;
+      white-space:nowrap;
+      font-weight:700;
+    }
+    main{
+      max-width:1280px;
+      margin:0 auto;
+      padding:24px clamp(16px,4vw,48px) 64px;
+    }
+    .notice{
+      border:1px solid rgba(251,191,36,.35);
+      background:rgba(251,191,36,.08);
+      padding:14px 16px;
+      border-radius:18px;
+      color:#fde68a;
+      margin-bottom:18px;
+    }
+    .tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:18px 0;
+    }
+    .tab{
+      border:1px solid var(--line);
+      background:rgba(21,31,46,.8);
+      color:var(--text);
+      border-radius:999px;
+      padding:10px 14px;
+      cursor:pointer;
+      font-weight:800;
+    }
+    .tab.active{
+      border-color:rgba(110,231,255,.7);
+      background:linear-gradient(135deg,rgba(110,231,255,.22),rgba(167,139,250,.18));
+      box-shadow:0 0 0 3px rgba(110,231,255,.08);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:18px;
+    }
+    section.card{
+      grid-column:span 12;
+      background:linear-gradient(180deg,rgba(16,23,34,.96),rgba(10,15,24,.96));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:24px;
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+    @media (min-width:900px){
+      section.half{grid-column:span 6}
+      section.third{grid-column:span 4}
+      section.twoThird{grid-column:span 8}
+    }
+    h2{margin:0 0 14px;font-size:22px;letter-spacing:-.025em}
+    h3{margin:18px 0 10px}
+    .muted{color:var(--muted);line-height:1.5}
+    .row{
+      display:grid;
+      grid-template-columns:1.2fr 1.2fr .9fr .7fr;
+      gap:10px;
+      align-items:end;
+      padding:12px;
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:16px;
+      background:rgba(255,255,255,.025);
+      margin-bottom:10px;
+    }
+    @media (max-width:760px){.row{grid-template-columns:1fr}}
+    label{display:block;color:#cbd5e1;font-size:12px;font-weight:800;margin:0 0 6px;text-transform:uppercase;letter-spacing:.08em}
+    select,input,textarea{
+      width:100%;
+      background:#09101a;
+      color:var(--text);
+      border:1px solid #344258;
+      border-radius:12px;
+      padding:10px 11px;
+      font:inherit;
+      outline:none;
+    }
+    input[type=color]{padding:4px;height:42px}
+    input[type=checkbox]{width:auto}
+    button,.btn{
+      border:0;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:#031018;
+      border-radius:12px;
+      padding:10px 14px;
+      font-weight:900;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      gap:8px;
+      min-height:42px;
+    }
+    button.ghost,.btn.ghost{
+      background:#111b29;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .pill{
+      display:inline-flex;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:#cbd5e1;
+      background:rgba(255,255,255,.04);
+      font-size:12px;
+      font-weight:800;
+    }
+    .status{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:12px;
+    }
+    .stat{
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:18px;
+      padding:14px;
+      background:rgba(255,255,255,.03);
+    }
+    .stat strong{display:block;font-size:24px}
+    .preview{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      align-items:start;
+    }
+    @media(max-width:800px){.preview{grid-template-columns:1fr}}
+    .macropad{
+      background:#05080d;
+      border:1px solid #263244;
+      border-radius:28px;
+      padding:22px;
+      aspect-ratio:1.12/1;
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      grid-template-rows:repeat(2,1fr);
+      gap:14px;
+      box-shadow:inset 0 0 32px rgba(110,231,255,.05);
+    }
+    .keycap{
+      border-radius:18px;
+      background:linear-gradient(180deg,#223044,#111827);
+      border:1px solid #3a4961;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      font-weight:900;
+      min-height:70px;
+      box-shadow:0 10px 20px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.08);
+      cursor:pointer;
+      user-select:none;
+    }
+    .keycap:active,.keycap.flash{
+      transform:translateY(2px);
+      box-shadow:0 0 24px rgba(110,231,255,.38), inset 0 0 18px rgba(110,231,255,.16);
+      border-color:rgba(110,231,255,.8);
+    }
+    .keycap span{font-size:11px;color:var(--muted);margin-top:4px}
+    .oled{
+      background:#020617;
+      border:1px solid #263244;
+      border-radius:20px;
+      padding:18px;
+      min-height:190px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      box-shadow:inset 0 0 28px rgba(110,231,255,.08);
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    }
+    .eyes{display:flex;gap:16px;justify-content:center;align-items:center}
+    .eye{
+      width:64px;
+      height:48px;
+      border-radius:16px;
+      background:#dffaff;
+      box-shadow:0 0 20px rgba(110,231,255,.5);
+      animation:blink 5s infinite;
+    }
+    @keyframes blink{
+      0%,94%,100%{height:48px}
+      96%{height:5px}
+    }
+    .leds{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+    .led{
+      width:20px;height:20px;border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 18px var(--accent);
+      animation:pulse 1.7s infinite alternate;
+    }
+    @keyframes pulse{from{opacity:.35}to{opacity:1}}
+    .hidden{display:none!important}
+    .split{display:flex;gap:10px;flex-wrap:wrap}
+    .footer{margin-top:28px;color:var(--muted);font-size:14px}
+    code{background:#111827;border:1px solid #263244;border-radius:8px;padding:2px 6px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="hero">
+      <div>
+        <h1>MacroLad WebUI Demo</h1>
+        <p class="sub">A browser-only mockup of the ESP32-S3 macropad configuration page. Click around, change settings, and smack the virtual keys before flashing the real firmware.</p>
+      </div>
+      <div class="badge">GPL-3.0 · Static Demo</div>
+    </div>
+  </header>
+
+  <main>
+    <div class="notice"><strong>Demo mode:</strong> nothing here talks to hardware. Settings are stored only in your browser for preview.</div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="dashboard">Dashboard</button>
+      <button class="tab" data-tab="keys">Keys</button>
+      <button class="tab" data-tab="combos">Combos</button>
+      <button class="tab" data-tab="lighting">Lighting</button>
+      <button class="tab" data-tab="display">Display</button>
+      <button class="tab" data-tab="profiles">Profiles</button>
+      <button class="tab" data-tab="hardware">Hardware</button>
+    </div>
+
+    <div id="dashboard" class="page">
+      <div class="grid">
+        <section class="card twoThird">
+          <h2>Live preview</h2>
+          <div class="preview">
+            <div>
+              <div class="macropad" id="macropad"></div>
+              <div class="leds" id="leds"></div>
+            </div>
+            <div class="oled" id="oled">
+              <div>
+                <div class="eyes"><div class="eye"></div><div class="eye"></div></div>
+                <p id="oledText">MacroLad<br>192.168.4.1</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="card third">
+          <h2>Device status</h2>
+          <div class="status">
+            <div class="stat"><span class="muted">Firmware</span><strong>1.0.0</strong></div>
+            <div class="stat"><span class="muted">Keys</span><strong>10</strong></div>
+            <div class="stat"><span class="muted">Wi-Fi AP</span><strong>MacroLad</strong></div>
+            <div class="stat"><span class="muted">USB HID</span><strong>Enabled</strong></div>
+          </div>
+          <p class="muted">The real firmware serves a WebUI from the ESP32 and can show IP address, clock, and RoboEyes screens on the OLED.</p>
+        </section>
+      </div>
+    </div>
+
+    <div id="keys" class="page hidden">
+      <section class="card">
+        <h2>Keys</h2>
+        <p class="muted">Configure normal action, long-press action, eye animation, eye position, and LED press effect for each key.</p>
+        <div id="keyRows"></div>
+      </section>
+    </div>
+
+    <div id="combos" class="page hidden">
+      <section class="card">
+        <h2>Custom key combinations</h2>
+        <p class="muted">Build a shortcut from up to four parts. In firmware, saved combos are added to the normal action dropdowns.</p>
+        <div class="row">
+          <div><label>Part 1</label><select class="comboPart"></select></div>
+          <div><label>Part 2</label><select class="comboPart"></select></div>
+          <div><label>Part 3</label><select class="comboPart"></select></div>
+          <div><label>Part 4</label><select class="comboPart"></select></div>
+        </div>
+        <button id="addCombo">Add combo</button>
+        <h3>Saved combos</h3>
+        <div id="comboList" class="split"></div>
+      </section>
+    </div>
+
+    <div id="lighting" class="page hidden">
+      <div class="grid">
+        <section class="card half">
+          <h2>Global lighting</h2>
+          <label>Ambient colour</label>
+          <input id="ambientColor" type="color" value="#2040ff">
+          <label>Brightness</label>
+          <input id="brightness" type="range" min="0" max="255" value="80">
+          <label>Lighting effect</label>
+          <select id="lightingEffect"></select>
+          <label>Speed</label>
+          <input id="speed" type="range" min="1" max="10" value="5">
+        </section>
+        <section class="card half">
+          <h2>Press effects</h2>
+          <p class="muted">Each key can use its own press effect. Use the Keys tab to assign them per key.</p>
+          <div id="effectPills" class="split"></div>
+        </section>
+      </div>
+    </div>
+
+    <div id="display" class="page hidden">
+      <div class="grid">
+        <section class="card half">
+          <h2>OLED idle screens</h2>
+          <label><input type="checkbox" checked> Show IP address screen</label>
+          <label><input type="checkbox"> Show clock screen</label>
+          <label><input type="checkbox" checked> Show RoboEyes screen</label>
+          <label>OLED brightness</label>
+          <input type="range" min="0" max="255" value="255">
+          <label>Button/action display time</label>
+          <input type="number" value="1000">
+        </section>
+        <section class="card half">
+          <h2>Clock</h2>
+          <label>Time zone</label>
+          <select id="timezone"></select>
+          <label>Date format</label>
+          <select id="dateFormat"></select>
+          <label>Clock font</label>
+          <select id="clockFont"></select>
+          <div class="split">
+            <label><input type="checkbox" checked> 24-hour time</label>
+            <label><input type="checkbox" checked> Show date</label>
+            <label><input type="checkbox" checked> Show time zone</label>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div id="profiles" class="page hidden">
+      <section class="card">
+        <h2>Profiles</h2>
+        <p class="muted">The firmware supports up to 5 profiles with export/import backup.</p>
+        <div id="profilesList"></div>
+        <div class="split">
+          <button id="addProfile">Add profile</button>
+          <button class="ghost" id="exportProfiles">Export profiles</button>
+          <button class="ghost" id="importProfiles">Import demo backup</button>
+        </div>
+        <textarea id="backup" rows="8" placeholder="Exported profile data appears here..."></textarea>
+      </section>
+    </div>
+
+    <div id="hardware" class="page hidden">
+      <section class="card">
+        <h2>Hardware constants</h2>
+        <p class="muted">The hardware section is typed by hand in the sketch. Change these manually if your board, pins, LED count, or display wiring differs.</p>
+        <div class="status">
+          <div class="stat"><span class="muted">KEY_COUNT</span><strong>10</strong></div>
+          <div class="stat"><span class="muted">KEY_PINS</span><strong>1,2,3,4,5,6,10,11,12,13</strong></div>
+          <div class="stat"><span class="muted">RGB_PIN</span><strong>7</strong></div>
+          <div class="stat"><span class="muted">STRIP_LED_COUNT</span><strong>10</strong></div>
+          <div class="stat"><span class="muted">OLED_SDA</span><strong>8</strong></div>
+          <div class="stat"><span class="muted">OLED_SCL</span><strong>9</strong></div>
+        </div>
+        <h3>Potentially compatible</h3>
+        <p class="muted">ESP32-S3 boards with native USB/TinyUSB HID, switches wired GPIO-to-GND, WS2812/NeoPixel LEDs, and SSD1306 I2C OLEDs.</p>
+      </section>
+    </div>
+
+    <p class="footer">MacroLad source: <a href="https://github.com/CasketPizza/MacroLad">github.com/CasketPizza/MacroLad</a>. This mockup is static HTML/CSS/JS and does not require firmware or hardware.</p>
+  </main>
+
+<script>
+const actions = ["Disabled","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","0","1","2","3","4","5","6","7","8","9","Enter","Escape","Tab","Space","Backspace","Delete","Insert","Home","End","Page Up","Page Down","Arrow Up","Arrow Down","Arrow Left","Arrow Right","Caps Lock","Print Screen","F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12","Copy","Paste","Cut","Undo","Redo","Save","Select All","Alt Tab","Run Dialog","Ctrl Alt Delete","Play / Pause","Next Track","Previous Track","Stop","Volume Up","Volume Down","Mute"];
+const effects = ["Ambient pulse","White pulse","Rainbow burst","Rainbow wipe","Color trail","Rainbow trail","Comet","Rainbow comet","Color wipe","Scanner","Color pop","Sparkle pop","White strobe","No press effect"];
+const lighting = ["Solid","Breathing","Rainbow","Color chase","Sparkle"];
+const eyes = ["Blink","Double blink","Wink left","Wink right","Happy","Angry","Tired","Laugh","Shake","Confused","Flicker","Side eye","Scan","Dizzy","Panic","Suspicious","Excited","Glitch","Sleep blink","Judgement","Startled","Cyclops blink","Sweat drop","Curious peek","Grumpy look"];
+const eyePos = ["Center","Top","Top right","Right","Bottom right","Bottom","Bottom left","Left","Top left"];
+const comboParts = ["None","Ctrl","Shift","Alt","Win / GUI","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","0","1","2","3","4","5","6","7","8","9","Enter","Escape","Tab","Space","Backspace","Delete","Insert","Home","End","Page Up","Page Down","Arrow Up","Arrow Down","Arrow Left","Arrow Right","F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12"];
+const timezones = ["UTC","Australia/Sydney","Australia/Adelaide","Australia/Brisbane","Australia/Darwin","Australia/Perth","Pacific/Auckland","Europe/London","Europe/Berlin","Europe/Paris","US/Eastern","US/Central","US/Mountain","US/Pacific","Asia/Tokyo","Asia/Seoul","Asia/Singapore"];
+const dateFormats = ["Mon 07 May","07 May 2026","2026-05-07","07/05/2026","05/07/2026"];
+const fonts = ["Default","Sans","Sans bold","Sans italic","Mono","Mono bold","Serif","Serif bold","Pixel compact","Pixel tiny","Pixel 3x3","Pixel tall"];
+let state = JSON.parse(localStorage.getItem("macrolad-demo")||"{}");
+state.keys ||= Array.from({length:10},(_,i)=>({action:String(i+1).replace("10","0"), longAction:"Disabled", effect:effects[i%effects.length], eye:eyes[i%eyes.length], pos:"Center"}));
+state.combos ||= ["Ctrl + Alt + Delete"];
+state.profiles ||= ["Profile 1"];
+state.activeProfile ||= 0;
+
+function save(){ localStorage.setItem("macrolad-demo", JSON.stringify(state)); renderPreview(); }
+function options(list, selected){ return list.map(x=>`<option ${x===selected?"selected":""}>${x}</option>`).join(""); }
+
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.remove("hidden");
+  });
+});
+
+function renderPreview(){
+  const pad = document.getElementById("macropad");
+  pad.innerHTML = state.keys.map((k,i)=>`<div class="keycap" data-key="${i}">K${i+1}<span>${k.action}</span></div>`).join("");
+  pad.querySelectorAll(".keycap").forEach(el=>{
+    el.addEventListener("click",()=>{
+      const i=+el.dataset.key;
+      el.classList.add("flash");
+      document.getElementById("oledText").innerHTML = `Key ${i+1}<br>${state.keys[i].action}<br>${state.keys[i].eye}`;
+      setTimeout(()=>el.classList.remove("flash"),250);
+    });
+  });
+  const color = document.getElementById("ambientColor")?.value || "#2040ff";
+  document.documentElement.style.setProperty("--accent", color);
+  document.getElementById("leds").innerHTML = Array.from({length:10},()=>`<span class="led"></span>`).join("");
+}
+
+function renderKeys(){
+  document.getElementById("keyRows").innerHTML = state.keys.map((k,i)=>`
+    <div class="row">
+      <div><label>Key ${i+1} action</label><select data-i="${i}" data-field="action">${options(actions,k.action)}</select></div>
+      <div><label>Long press</label><select data-i="${i}" data-field="longAction" ${i===9?"disabled":""}>${options(actions,k.longAction)}</select></div>
+      <div><label>Eye animation</label><select data-i="${i}" data-field="eye">${options(eyes,k.eye)}</select></div>
+      <div><label>LED effect</label><select data-i="${i}" data-field="effect">${options(effects,k.effect)}</select></div>
+    </div>
+  `).join("");
+  document.querySelectorAll("#keyRows select").forEach(sel=>{
+    sel.addEventListener("change",()=>{
+      state.keys[sel.dataset.i][sel.dataset.field]=sel.value;
+      save();
+      renderKeys();
+    });
+  });
+}
+
+function renderCombos(){
+  document.querySelectorAll(".comboPart").forEach(sel=>sel.innerHTML=options(comboParts,"None"));
+  document.getElementById("comboList").innerHTML = state.combos.map((c,i)=>`<span class="pill">${c} <button class="ghost" data-remove="${i}" style="min-height:0;padding:2px 7px;margin-left:6px">×</button></span>`).join("");
+  document.querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>{state.combos.splice(+b.dataset.remove,1);save();renderCombos();});
+}
+document.getElementById("addCombo").onclick=()=>{
+  const parts=[...document.querySelectorAll(".comboPart")].map(s=>s.value).filter(v=>v!=="None");
+  if(parts.length && !state.combos.includes(parts.join(" + "))) state.combos.push(parts.join(" + "));
+  save(); renderCombos();
+};
+
+function renderLighting(){
+  document.getElementById("lightingEffect").innerHTML = options(lighting,"Solid");
+  document.getElementById("effectPills").innerHTML = effects.map(e=>`<span class="pill">${e}</span>`).join("");
+  document.getElementById("ambientColor").oninput=save;
+}
+function renderDisplay(){
+  document.getElementById("timezone").innerHTML = options(timezones,"Australia/Sydney");
+  document.getElementById("dateFormat").innerHTML = options(dateFormats,"Mon 07 May");
+  document.getElementById("clockFont").innerHTML = options(fonts,"Default");
+}
+function renderProfiles(){
+  document.getElementById("profilesList").innerHTML = state.profiles.map((p,i)=>`
+    <div class="row">
+      <div><label>Profile ${i+1}</label><input value="${p}" data-profile="${i}"></div>
+      <div><label>Status</label><span class="pill">${i===state.activeProfile?"Active":"Saved"}</span></div>
+      <div><button class="ghost" data-active="${i}">Switch</button></div>
+      <div><button class="ghost" data-del="${i}" ${state.profiles.length<2?"disabled":""}>Delete</button></div>
+    </div>`).join("");
+  document.querySelectorAll("[data-profile]").forEach(inp=>inp.onchange=()=>{state.profiles[+inp.dataset.profile]=inp.value||"Profile";save();renderProfiles();});
+  document.querySelectorAll("[data-active]").forEach(b=>b.onclick=()=>{state.activeProfile=+b.dataset.active;save();renderProfiles();});
+  document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{state.profiles.splice(+b.dataset.del,1);state.activeProfile=0;save();renderProfiles();});
+}
+document.getElementById("addProfile").onclick=()=>{ if(state.profiles.length<5) state.profiles.push(`Profile ${state.profiles.length+1}`); save(); renderProfiles(); };
+document.getElementById("exportProfiles").onclick=()=>{ document.getElementById("backup").value=JSON.stringify(state,null,2); };
+document.getElementById("importProfiles").onclick=()=>{ document.getElementById("backup").value='Paste real exported firmware profile data here when using the ESP32 WebUI.'; };
+
+renderPreview();
+renderKeys();
+renderCombos();
+renderLighting();
+renderDisplay();
+renderProfiles();
+</script>
+</body>
+</html>
