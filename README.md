@@ -4,10 +4,12 @@ MacroLad is an ESP32-S3 USB macropad firmware with a built-in Wi-Fi configuratio
 
 It is designed around a hand-wired 10-key build, but the firmware can be altered for different key counts, GPIO pins, LED layouts, and display wiring.
 
+![MacroLad device photo](images/macrolad-device.gif)
+
+The photographed build uses the [shortcut_deck 3D-printable model by the_pragma_way on Thingiverse](https://www.thingiverse.com/thing:7151316). If you build your own MacroLad with different printed parts, check the switch spacing, OLED opening, USB access, LED clearance, and GPIO wiring before flashing.
+
 > **Demo WebUI:** try the browser-only mockup before flashing:  
 > <https://casketpizza.github.io/MacroLad/>
-
-The demo lives in [`docs/index.html`](docs/index.html), so it can be hosted directly with GitHub Pages.
 
 ---
 
@@ -72,6 +74,10 @@ Current wiring:
 | OLED SDA | GPIO `8` |
 | OLED SCL | GPIO `9` |
 | Wi-Fi AP name | `MacroLad` |
+
+### Printed enclosure / case
+
+This build uses the [shortcut_deck model by the_pragma_way on Thingiverse](https://www.thingiverse.com/thing:7151316). The firmware does not depend on this exact shell, but the default key layout, OLED position, and photographed build are based around that printed design.
 
 Relevant firmware constants:
 
@@ -165,6 +171,8 @@ Use it to preview the layout and explore the kind of settings available before f
 
 <https://casketpizza.github.io/MacroLad/>
 
+---
+
 ## Flashing / setup overview
 
 1. Install the ESP32 board package in Arduino IDE.
@@ -243,10 +251,10 @@ If you change the key count, check the WebUI, profile storage, OLED menu behavio
 ---
 
 
-
 ## Credits
 
 - Firmware by Casket Pizza
+- 3D-printable enclosure/model: [shortcut_deck by the_pragma_way on Thingiverse](https://www.thingiverse.com/thing:7151316)
 - Animated eyes powered by FluxGarage RoboEyes
 - Display and LED libraries by Adafruit
 - ESP32 platform support by Espressif
