@@ -4,7 +4,7 @@ MacroLad is an ESP32-S3 USB macropad firmware with a built-in Wi-Fi configuratio
 
 It is designed around a hand-wired 10-key build, but the firmware can be altered for different key counts, GPIO pins, LED layouts, and display wiring.
 
-![MacroLad device photo](images/macrolad-device.gif)
+![MacroLad device photo](docs/macrolad.gif)
 
 The photographed build uses the [shortcut_deck 3D-printable model by the_pragma_way on Thingiverse](https://www.thingiverse.com/thing:7151316). If you build your own MacroLad with different printed parts, check the switch spacing, OLED opening, USB access, LED clearance, and GPIO wiring before flashing.
 
