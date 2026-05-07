@@ -24,6 +24,7 @@ Above build uses the [shortcut_deck 3D-printable model by the_pragma_way on Thin
   - Media controls such as play/pause, next, previous, volume, and mute
 - **Custom key combinations**
   - Build shortcuts from parts such as Ctrl, Shift, Alt, GUI/Win, letters, numbers, arrows, function keys, and navigation keys
+  - Automatic Run command execution for launching applications
   - Saved combinations appear in the normal key action dropdowns
 - **Profiles**
   - Up to 5 profiles
